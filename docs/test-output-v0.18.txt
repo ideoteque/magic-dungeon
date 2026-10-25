@@ -1,0 +1,364 @@
+TAP version 13
+# Subtest: inventory: 52 Chest, 36 Altar, 20 unique heroes
+ok 1 - inventory: 52 Chest, 36 Altar, 20 unique heroes
+  ---
+  duration_ms: 0.916242
+  type: 'test'
+  ...
+# Subtest: snake draft for 2–4 players
+ok 2 - snake draft for 2–4 players
+  ---
+  duration_ms: 0.665334
+  type: 'test'
+  ...
+# Subtest: seed reproducibility
+ok 3 - seed reproducibility
+  ---
+  duration_ms: 0.39781
+  type: 'test'
+  ...
+# Subtest: invalid actions rejected
+ok 4 - invalid actions rejected
+  ---
+  duration_ms: 0.303648
+  type: 'test'
+  ...
+# Subtest: L1 finish when exceeding 30 and score first two
+ok 5 - L1 finish when exceeding 30 and score first two
+  ---
+  duration_ms: 0.886808
+  type: 'test'
+  ...
+# Subtest: Dragon challenge failure Trips and keeps position
+ok 6 - Dragon challenge failure Trips and keeps position
+  ---
+  duration_ms: 1.127772
+  type: 'test'
+  ...
+# Subtest: Tripped skips roll, retains position
+ok 7 - Tripped skips roll, retains position
+  ---
+  duration_ms: 0.2118
+  type: 'test'
+  ...
+# Subtest: Chest draws and hand max two
+ok 8 - Chest draws and hand max two
+  ---
+  duration_ms: 0.299733
+  type: 'test'
+  ...
+# Subtest: Magical movement finishes Dragon without challenge
+ok 9 - Magical movement finishes Dragon without challenge
+  ---
+  duration_ms: 0.617101
+  type: 'test'
+  ...
+# Subtest: Illegal Chest action rejected
+ok 10 - Illegal Chest action rejected
+  ---
+  duration_ms: 0.552944
+  type: 'test'
+  ...
+# Subtest: movement events preserve intermediate animation endpoints
+ok 11 - movement events preserve intermediate animation endpoints
+  ---
+  duration_ms: 0.210788
+  type: 'test'
+  ...
+# Subtest: failed Dragon Challenge does not record movement
+ok 12 - failed Dragon Challenge does not record movement
+  ---
+  duration_ms: 0.168675
+  type: 'test'
+  ...
+# Subtest: playing a pending card does not consume it
+ok 13 - playing a pending card does not consume it
+  ---
+  duration_ms: 0.159911
+  type: 'test'
+  ...
+# Subtest: Prison Chains requires an eligible target and trips that hero
+ok 14 - Prison Chains requires an eligible target and trips that hero
+  ---
+  duration_ms: 0.5037
+  type: 'test'
+  ...
+# Subtest: Force Scroll pushes target back 3 and emits movement event
+ok 15 - Force Scroll pushes target back 3 and emits movement event
+  ---
+  duration_ms: 0.286062
+  type: 'test'
+  ...
+# Subtest: Fire Wave affects only other nearby active heroes
+ok 16 - Fire Wave affects only other nearby active heroes
+  ---
+  duration_ms: 0.201344
+  type: 'test'
+  ...
+# Subtest: Olarin rolling one as leader does not move
+ok 17 - Olarin rolling one as leader does not move
+  ---
+  duration_ms: 0.158939
+  type: 'test'
+  ...
+# Subtest: Small Shield cancels a directed Prison Chains attack when chosen
+ok 18 - Small Shield cancels a directed Prison Chains attack when chosen
+  ---
+  duration_ms: 0.206691
+  type: 'test'
+  ...
+# Subtest: Small Shield not consumed if defender declines
+ok 19 - Small Shield not consumed if defender declines
+  ---
+  duration_ms: 0.195094
+  type: 'test'
+  ...
+# Subtest: Fire Wave shield applies individually to eligible targets
+ok 20 - Fire Wave shield applies individually to eligible targets
+  ---
+  duration_ms: 0.403689
+  type: 'test'
+  ...
+# Subtest: Illegal target cannot consume defender shield
+ok 21 - Illegal target cannot consume defender shield
+  ---
+  duration_ms: 0.121123
+  type: 'test'
+  ...
+# Subtest: Gnat rides carrier without extra chest draw
+ok 22 - Gnat rides carrier without extra chest draw
+  ---
+  duration_ms: 2.684921
+  type: 'test'
+  ...
+# Subtest: Gnat does not ride when carrier was not sharing origin
+ok 23 - Gnat does not ride when carrier was not sharing origin
+  ---
+  duration_ms: 0.394826
+  type: 'test'
+  ...
+# Subtest: Pixie reacts to a Chiron power activation
+ok 24 - Pixie reacts to a Chiron power activation
+  ---
+  duration_ms: 0.352602
+  type: 'test'
+  ...
+# Subtest: Pixie does not self-trigger endlessly
+ok 25 - Pixie does not self-trigger endlessly
+  ---
+  duration_ms: 0.173612
+  type: 'test'
+  ...
+# Subtest: Warp simultaneous swap avoids passing effects
+ok 26 - Warp simultaneous swap avoids passing effects
+  ---
+  duration_ms: 0.399373
+  type: 'test'
+  ...
+# Subtest: Warp action skips rolling and changes turn
+ok 27 - Warp action skips rolling and changes turn
+  ---
+  duration_ms: 0.3379
+  type: 'test'
+  ...
+# Subtest: Gnat and carrier finish together in turn order
+ok 28 - Gnat and carrier finish together in turn order
+  ---
+  duration_ms: 0.286813
+  type: 'test'
+  ...
+# Subtest: Chiron passes and knocks back two
+ok 29 - Chiron passes and knocks back two
+  ---
+  duration_ms: 1.96817
+  type: 'test'
+  ...
+# Subtest: Passing requires ending ahead
+ok 30 - Passing requires ending ahead
+  ---
+  duration_ms: 0.243367
+  type: 'test'
+  ...
+# Subtest: Grok passing knocks back one
+ok 31 - Grok passing knocks back one
+  ---
+  duration_ms: 0.240653
+  type: 'test'
+  ...
+# Subtest: Gronk ejects arrival; START exempt
+ok 32 - Gronk ejects arrival; START exempt
+  ---
+  duration_ms: 0.242116
+  type: 'test'
+  ...
+# Subtest: Gronk entering occupied space ejects occupants
+ok 33 - Gronk entering occupied space ejects occupants
+  ---
+  duration_ms: 0.331661
+  type: 'test'
+  ...
+# Subtest: Thorin Brewburn slams and trips on arrival
+ok 34 - Thorin Brewburn slams and trips on arrival
+  ---
+  duration_ms: 0.229586
+  type: 'test'
+  ...
+# Subtest: Vespera forced backwards drags only nearby heroes
+ok 35 - Vespera forced backwards drags only nearby heroes
+  ---
+  duration_ms: 0.970345
+  type: 'test'
+  ...
+# Subtest: Vespera voluntary backward move does not drag
+ok 36 - Vespera voluntary backward move does not drag
+  ---
+  duration_ms: 0.289567
+  type: 'test'
+  ...
+# Subtest: CPU protects itself from supported directed attack
+ok 37 - CPU protects itself from supported directed attack
+  ---
+  duration_ms: 1.598862
+  type: 'test'
+  ...
+# Subtest: CPU attack selection uses valid nearby target
+ok 38 - CPU attack selection uses valid nearby target
+  ---
+  duration_ms: 0.762
+  type: 'test'
+  ...
+# Subtest: CPU avoids action with no valid target
+ok 39 - CPU avoids action with no valid target
+  ---
+  duration_ms: 0.312241
+  type: 'test'
+  ...
+# Subtest: no shield choice without a shield or valid attack
+ok 40 - no shield choice without a shield or valid attack
+  ---
+  duration_ms: 0.201404
+  type: 'test'
+  ...
+# Subtest: global movement applies to both carrier and Gnat once
+ok 41 - global movement applies to both carrier and Gnat once
+  ---
+  duration_ms: 1.890342
+  type: 'test'
+  ...
+# Subtest: global movement snapshots all starting positions
+ok 42 - global movement snapshots all starting positions
+  ---
+  duration_ms: 0.278691
+  type: 'test'
+  ...
+# Subtest: global movement clamps backward at START
+ok 43 - global movement clamps backward at START
+  ---
+  duration_ms: 0.221214
+  type: 'test'
+  ...
+# Subtest: global movement does not duplicate piggyback landing chest
+ok 44 - global movement does not duplicate piggyback landing chest
+  ---
+  duration_ms: 0.25186
+  type: 'test'
+  ...
+# Subtest: Warp does not pass through or disturb third runner
+ok 45 - Warp does not pass through or disturb third runner
+  ---
+  duration_ms: 0.403288
+  type: 'test'
+  ...
+# Subtest: Warp does not create fake crossing pass activation
+ok 46 - Warp does not create fake crossing pass activation
+  ---
+  duration_ms: 0.567837
+  type: 'test'
+  ...
+# Subtest: Pixie receives one move per distinct power activation
+ok 47 - Pixie receives one move per distinct power activation
+  ---
+  duration_ms: 1.015212
+  type: 'test'
+  ...
+# Subtest: separate movement roots do not share cycle detection state
+ok 48 - separate movement roots do not share cycle detection state
+  ---
+  duration_ms: 0.227413
+  type: 'test'
+  ...
+# Subtest: global finishing respects active-player clockwise order
+ok 49 - global finishing respects active-player clockwise order
+  ---
+  duration_ms: 0.494837
+  type: 'test'
+  ...
+# Subtest: global Vespera does not double-drag participants
+ok 50 - global Vespera does not double-drag participants
+  ---
+  duration_ms: 1.781138
+  type: 'test'
+  ...
+# Subtest: global Vespera movement at START clamps without duplicate
+ok 51 - global Vespera movement at START clamps without duplicate
+  ---
+  duration_ms: 0.257449
+  type: 'test'
+  ...
+# Subtest: Warp simultaneous finish ranks active player first
+ok 52 - Warp simultaneous finish ranks active player first
+  ---
+  duration_ms: 0.429257
+  type: 'test'
+  ...
+# Subtest: Warp destination chain does not resolve stale landing tile after Gronk ejection
+ok 53 - Warp destination chain does not resolve stale landing tile after Gronk ejection
+  ---
+  duration_ms: 0.536269
+  type: 'test'
+  ...
+# Subtest: clockwise priority begins at active player
+ok 54 - clockwise priority begins at active player
+  ---
+  duration_ms: 1.055252
+  type: 'test'
+  ...
+# Subtest: reactions precede consequences across all eligible targets
+ok 55 - reactions precede consequences across all eligible targets
+  ---
+  duration_ms: 1.222195
+  type: 'test'
+  ...
+# Subtest: pending destination is cancelled after movement away
+ok 56 - pending destination is cancelled after movement away
+  ---
+  duration_ms: 0.405482
+  type: 'test'
+  ...
+# Subtest: new reaction inserted during resolution precedes pending destinations
+ok 57 - new reaction inserted during resolution precedes pending destinations
+  ---
+  duration_ms: 0.286362
+  type: 'test'
+  ...
+# Subtest: repeated relevant event state is flagged, not silently looped
+ok 58 - repeated relevant event state is flagged, not silently looped
+  ---
+  duration_ms: 0.237669
+  type: 'test'
+  ...
+# Subtest: identical event names with changing game state are not mistaken for cycles
+ok 59 - identical event names with changing game state are not mistaken for cycles
+  ---
+  duration_ms: 0.226792
+  type: 'test'
+  ...
+1..59
+# tests 59
+# suites 0
+# pass 59
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 176.970604

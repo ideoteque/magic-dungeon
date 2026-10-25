@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: inventory: 52 Chest, 36 Altar, 20 unique heroes
+ok 1 - inventory: 52 Chest, 36 Altar, 20 unique heroes
+  ---
+  duration_ms: 0.925215
+  type: 'test'
+  ...
+# Subtest: snake draft for 2–4 players
+ok 2 - snake draft for 2–4 players
+  ---
+  duration_ms: 0.73606
+  type: 'test'
+  ...
+# Subtest: seed reproducibility
+ok 3 - seed reproducibility
+  ---
+  duration_ms: 0.326582
+  type: 'test'
+  ...
+# Subtest: invalid actions rejected
+ok 4 - invalid actions rejected
+  ---
+  duration_ms: 0.268545
+  type: 'test'
+  ...
+# Subtest: L1 finish when exceeding 30 and score first two
+ok 5 - L1 finish when exceeding 30 and score first two
+  ---
+  duration_ms: 0.68927
+  type: 'test'
+  ...
+# Subtest: Dragon challenge failure Trips and keeps position
+ok 6 - Dragon challenge failure Trips and keeps position
+  ---
+  duration_ms: 0.267703
+  type: 'test'
+  ...
+# Subtest: Tripped skips roll, retains position
+ok 7 - Tripped skips roll, retains position
+  ---
+  duration_ms: 0.257419
+  type: 'test'
+  ...
+# Subtest: Chest draws and hand max two
+ok 8 - Chest draws and hand max two
+  ---
+  duration_ms: 0.207312
+  type: 'test'
+  ...
+# Subtest: Magical movement finishes Dragon without challenge
+ok 9 - Magical movement finishes Dragon without challenge
+  ---
+  duration_ms: 0.300944
+  type: 'test'
+  ...
+# Subtest: Illegal Chest action rejected
+ok 10 - Illegal Chest action rejected
+  ---
+  duration_ms: 0.559534
+  type: 'test'
+  ...
+# Subtest: movement events preserve intermediate animation endpoints
+ok 11 - movement events preserve intermediate animation endpoints
+  ---
+  duration_ms: 0.967589
+  type: 'test'
+  ...
+# Subtest: failed Dragon Challenge does not record movement
+ok 12 - failed Dragon Challenge does not record movement
+  ---
+  duration_ms: 0.249256
+  type: 'test'
+  ...
+# Subtest: playing a pending card does not consume it
+ok 13 - playing a pending card does not consume it
+  ---
+  duration_ms: 0.297979
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 75.296499

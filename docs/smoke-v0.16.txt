@@ -1,0 +1,6 @@
+{
+  "smokeSeeds": 100,
+  "completed": 100,
+  "failures": [],
+  "failedCount": 0
+}

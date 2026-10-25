@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {beginDisplacement,commitDisplacement,resolutionSignature} from '../src/transactions.mjs';
+import {createResolution} from '../src/resolution.mjs';
+function game(){return {phase:'play',turn:1,count:3,unresolved:[],places:[],ongoing:[],runners:[{pos:3,place:0,tripped:false,nextBonus:0,hand:[]},{pos:8,place:0,tripped:false,nextBonus:0,hand:[]},{pos:12,place:0,tripped:false,nextBonus:0,hand:[]}]};}
+test('atomic transaction validates and commits both sides together',()=>{const g=game(),tx=beginDisplacement(g,[{i:0,from:3,to:8},{i:1,from:8,to:3}],{kind:'teleport'});assert.deepEqual(tx.entries.map(x=>x.i),[1,0]);assert.deepEqual(g.runners.map(r=>r.pos),[3,8,12]);assert.equal(commitDisplacement(g,tx),true);assert.deepEqual(g.runners.map(r=>r.pos),[8,3,12]);assert.equal(g.transactionHistory[0].kind,'teleport');});
+test('duplicate participants rejected without partial movement',()=>{const g=game();assert.throws(()=>beginDisplacement(g,[{i:0,from:3,to:5},{i:0,from:3,to:6}]));assert.equal(g.runners[0].pos,3);});
+test('stale snapshot rejected before mutation',()=>{const g=game();assert.throws(()=>beginDisplacement(g,[{i:0,from:2,to:5},{i:1,from:8,to:6}]));assert.deepEqual(g.runners.map(r=>r.pos),[3,8,12]);});
+test('commit detects conflict and preserves all other participants',()=>{const g=game(),tx=beginDisplacement(g,[{i:0,from:3,to:8},{i:1,from:8,to:3}]);g.runners[0].pos=4;assert.throws(()=>commitDisplacement(g,tx),/conflict/);assert.equal(g.runners[1].pos,8);});
+test('committed transaction cannot execute twice',()=>{const g=game(),tx=beginDisplacement(g,[{i:0,from:3,to:5}]);commitDisplacement(g,tx);assert.throws(()=>commitDisplacement(g,tx));});
+test('finished participants cannot be moved',()=>{const g=game();g.runners[0].place=1;assert.throws(()=>beginDisplacement(g,[{i:0,from:3,to:5}]));});
+test('resolution signature tracks bonuses, pending events and turn',()=>{const g=game(),event={type:'ability',runner:0,label:'PIXIE'},pending=[];const a=resolutionSignature(g,event,pending);g.runners[0].nextBonus=1;assert.notEqual(resolutionSignature(g,event,pending),a);g.runners[0].nextBonus=0;assert.notEqual(resolutionSignature(g,event,[event]),a);});
+test('scheduler halts a repeated state and marks unresolved',()=>{const g=game(),q=createResolution(g);let calls=0;const again=()=>{calls++;q.enqueue('ability',0,again,{label:'repeat'});};q.enqueue('ability',0,again,{label:'repeat'});const out=q.drain();assert.ok(calls<=2);assert.ok(g.unresolved.includes('repeated-resolution-state'));assert.ok(out.trace.some(x=>x.startsWith('CYCLE')));});
+test('scheduler still orders simultaneous destination events clockwise',()=>{const g=game(),q=createResolution(g),order=[];for(const i of [0,2,1])q.enqueue('destination',i,()=>order.push(i));q.drain();assert.deepEqual(order,[1,2,0]);});

@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {setup,draft,startLevel,move,globalMove,swap} from '../src/engine.mjs';
+import {withChainTransaction} from '../src/chain-transactions.mjs';
+function game(names){const g=setup(names.length,42);while(g.phase==='draft')draft(g,g.order[g.pick],g.pool[0]);startLevel(g,g.teams.map(t=>t[0]));names.forEach((n,i)=>g.runners[i].hero=n);return g;}
+function state(g){return structuredClone({runners:g.runners,places:g.places,scores:g.scores,phase:g.phase,log:g.log,history:g.history,unresolved:g.unresolved,transactionHistory:g.transactionHistory,dispatchHistory:g.dispatchHistory,altar:g.altar,chest:g.chest});}
+test('ordinary chain rolls back after a later step fails',()=>{const g=game(['BOBA','GNAT']);g.runners[0].pos=11;g.runners[1].pos=11;const before=state(g);assert.throws(()=>withChainTransaction(g,'turn',()=>{move(g,0,1);throw Error('injected downstream failure');}),/injected downstream failure/);assert.deepEqual(state(g),before);assert.equal(g._chainTransaction,undefined);});
+test('global chain rolls back every participant after a later failure',()=>{const g=game(['BOBA','GNAT']);g.runners[0].pos=11;g.runners[1].pos=6;const before=state(g);assert.throws(()=>withChainTransaction(g,'event',()=>{globalMove(g,1);throw Error('global failure');}),/global failure/);assert.deepEqual(state(g),before);});
+test('nested rollback restores all earlier writes from one root chain',()=>{const g=game(['BOBA','CHIRON']);const before=state(g);assert.throws(()=>withChainTransaction(g,'outer',()=>{move(g,0,4);move(g,1,2);throw Error('later step failed');}),/later step failed/);assert.deepEqual(state(g),before);});
+test('successful root chain retains all nested commits',()=>{const g=game(['BOBA','WARP']);withChainTransaction(g,'outer',()=>{move(g,0,2);move(g,1,3);});assert.deepEqual(g.runners.map(r=>r.pos),[2,3]);assert.equal(g.transactionHistory.length,2);});
+test('unresolved conditions do not roll back legitimate movement',()=>{const g=game(['BOBA','CHIRON']);g.runners[0].pos=7;move(g,0,1);assert.equal(g.runners[0].pos,8);assert.ok(g.unresolved.includes('SPIKES'));});
+test('simultaneous finish ranks active first and stops after second',()=>{for(const active of [0,1]){const g=game(['BOBA','GNAT']);g.turn=active;g.runners[0].pos=29;g.runners[1].pos=29;move(g,0,1);assert.deepEqual(g.places,active===0?[0,1]:[1,0]);assert.equal(g.phase,'results');assert.equal(g.runners.filter(r=>r.place>0).length,2);}});
+test('failed teleport validation preserves state and log',()=>{const g=game(['WARP','BOBA']);g.runners[1].pos=10;const before=state(g);assert.equal(swap(g,0,0),false);assert.deepEqual(state(g),before);});

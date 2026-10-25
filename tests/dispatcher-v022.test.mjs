@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {setup,draft,startLevel,move,swap,globalMove,dispatchDisplacement} from '../src/engine.mjs';
+function game(names){const g=setup(names.length,42);while(g.phase==='draft')draft(g,g.order[g.pick],g.pool[0]);startLevel(g,g.teams.map(t=>t[0]));names.forEach((name,i)=>g.runners[i].hero=name);return g;}
+test('dispatcher validates displacement kinds',()=>{const g=game(['BOBA','GNAT']);assert.throws(()=>dispatchDisplacement(g,{kind:'unknown'}),/Unknown displacement/);});
+test('ordinary movement uses dispatcher and retains chest activation',()=>{const g=game(['BOBA','GNAT']);move(g,0,3);assert.equal(g.dispatchHistory.at(-1).kind,'ordinary');assert.equal(g.runners[0].hand.length,1);});
+test('global displacement is registered once and uses snapshot',()=>{const g=game(['BOBA','GNAT','VESPERA']);g.runners.forEach(r=>r.pos=10);globalMove(g,-2);const batch=g.dispatchHistory.filter(x=>x.kind==='global');assert.equal(batch.length,1);assert.deepEqual(batch[0].snapshot.map(x=>x.from),[10,10,10]);assert.deepEqual(g.runners.map(r=>r.pos),[8,8,8]);});
+test('teleport passes through shared dispatcher without passing triggers',()=>{const g=game(['WARP','CHIRON','BOBA']);g.runners[0].pos=2;g.runners[1].pos=8;g.runners[2].pos=5;swap(g,0,1);assert.equal(g.dispatchHistory.at(-1).kind,'teleport');assert.deepEqual(g.runners.map(r=>r.pos),[8,2,5]);});
+test('Gnat and carrier landing destinations are queued together after reactions',()=>{const g=game(['BOBA','GNAT']);g.runners[0].pos=17;g.runners[1].pos=17;move(g,0,1);assert.equal(g.runners[0].pos,18);assert.equal(g.runners[1].pos,18);assert.equal(g.resolutionTrace.filter(x=>x.includes('destination ')).length,2);assert.equal(g.runners[1].hand.length,0);});
+test('Pixie power trigger during knockback retains deterministic position',()=>{const g=game(['CHIRON','BOBA','PIXIE']);g.runners[1].pos=3;move(g,0,5);assert.equal(g.runners[1].pos,1);assert.equal(g.runners[2].pos,1);assert.equal(g.history.filter(x=>x.type==='ability'&&x.ability==='CHIRON PASS').length,1);});

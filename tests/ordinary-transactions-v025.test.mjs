@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {setup,draft,startLevel,move,globalMove,swap} from '../src/engine.mjs';
+function game(names){const g=setup(names.length,42);while(g.phase==='draft')draft(g,g.order[g.pick],g.pool[0]);startLevel(g,g.teams.map(t=>t[0]));names.forEach((n,i)=>g.runners[i].hero=n);return g;}
+test('ordinary move records committed transaction',()=>{const g=game(['BOBA','CHIRON']);move(g,0,2);assert.deepEqual(g.transactionHistory.map(t=>t.kind),['ordinary']);assert.equal(g.transactionHistory[0].entries[0].to,2);});
+test('Gnat piggyback has separate auditable transaction',()=>{const g=game(['BOBA','GNAT']);g.runners[0].pos=2;g.runners[1].pos=2;move(g,0,1);assert.deepEqual(g.transactionHistory.map(t=>t.kind),['ordinary','piggyback']);assert.equal(g.runners[1].hand.length,0);});
+test('forced reaction movement uses transaction boundary',()=>{const g=game(['CHIRON','BOBA']);g.runners[1].pos=3;move(g,0,5);assert.ok(g.transactionHistory.filter(t=>t.kind==='ordinary').length>=2);assert.equal(g.runners[1].pos,1);});
+test('global movement remains atomic',()=>{const g=game(['BOBA','GNAT']);g.runners[0].pos=4;g.runners[1].pos=4;globalMove(g,-2);assert.deepEqual(g.runners.map(r=>r.pos),[2,2]);assert.deepEqual(g.transactionHistory.map(t=>t.kind),['global']);});
+test('teleport remains atomic without ordinary transactions',()=>{const g=game(['WARP','BOBA']);g.runners[1].pos=7;swap(g,0,1);assert.deepEqual(g.transactionHistory.map(t=>t.kind),['teleport']);});
+test('simultaneous Gnat finish logs two committed transactions in priority order',()=>{const g=game(['BOBA','GNAT']);g.runners[0].pos=29;g.runners[1].pos=29;move(g,0,2);assert.deepEqual(g.places,[0,1]);assert.equal(g.phase,'results');assert.deepEqual(g.transactionHistory.map(t=>t.kind),['ordinary','piggyback']);});
+test('repeated movements remain legal in separate chains',()=>{const g=game(['BOBA','CHIRON']);move(g,0,1);move(g,0,1);assert.equal(g.runners[0].pos,2);assert.equal(g.transactionHistory.length,2);});
+test('property: ordinary movement commits match final position for 60 deterministic offsets',()=>{for(let k=0;k<60;k++){const g=game(['BOBA','CHIRON']);const start=k%20;const delta=(k*7)%13-6;g.runners[0].pos=start;move(g,0,delta,{magical:true});assert.equal(g.runners[0].pos,Math.max(0,Math.min(30,start+delta)));assert.equal(g.transactionHistory[0].entries[0].from,start);assert.equal(g.transactionHistory[0].entries[0].to,g.runners[0].pos);}});
+test('property: finish order follows active player for Gnat rides',()=>{for(const active of [0,1]){const g=game(['BOBA','GNAT']);g.turn=active;g.runners[0].pos=29;g.runners[1].pos=29;move(g,0,1);assert.deepEqual(g.places,active===0?[0,1]:[1,0]);assert.equal(g.phase,'results');}});

@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {setup,draft,startLevel,playCard} from '../src/engine.mjs';
+import {hasShield,targetsFor,cpuShieldDecision,cpuAction} from '../src/reactions.mjs';
+function ready(n=2){const g=setup(n,4);while(g.phase==='draft')draft(g,g.order[g.pick],g.pool[0]);startLevel(g,g.teams.map(t=>t[0]));return g;}
+test('CPU protects itself from supported directed attack',()=>{const g=ready();g.runners[0].pos=10;g.runners[1].pos=11;g.runners[1].hand=[{id:'s',name:'Small Shield',timing:'Reaction'}];g.runners[0].hand=[{id:'a',name:'Prison Chains',timing:'Action'}];assert.equal(cpuShieldDecision(g,1,'Prison Chains'),true);assert.equal(playCard(g,0,'a',{target:1,shieldTargets:[1]}),true);assert.equal(g.runners[1].tripped,false);assert.equal(hasShield(g.runners[1]),false);});
+test('CPU attack selection uses valid nearby target',()=>{const g=ready(3);g.runners[0].pos=10;g.runners[1].pos=12;g.runners[2].pos=20;g.turn=1;g.runners[1].hand=[{id:'a',name:'Force Scroll',timing:'Action'}];assert.deepEqual(targetsFor(g,1,'Force Scroll'),[0]);assert.equal(cpuAction(g,1).target,0);});
+test('CPU avoids action with no valid target',()=>{const g=ready();g.runners[0].pos=0;g.runners[1].pos=20;g.runners[1].hand=[{id:'a',name:'Fire Wave',timing:'Action'}];assert.equal(cpuAction(g,1),null);});
+test('no shield choice without a shield or valid attack',()=>{const g=ready();assert.equal(cpuShieldDecision(g,1,'Force Scroll'),false);g.runners[1].hand=[{id:'s',name:'Small Shield',timing:'Reaction'}];assert.equal(cpuShieldDecision(g,1,'Speed Potion'),false);});
